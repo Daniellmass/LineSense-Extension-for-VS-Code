@@ -1,26 +1,41 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+
 import * as vscode from 'vscode';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	let previousTextLength = 0;
+    let lastCheckTime = Date.now();
+    let score = 0;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "helloworld" is now active!');
+	console.log('LineSense is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('helloworld.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from HelloWorld!');
-	});
+	const disposable = vscode.commands.registerCommand('linesense.checkCode', () => {
+		const editor = vscode.window.activeTextEditor
 
+		if (!editor) {
+            vscode.window.showInformationMessage('No active editor found!');
+            return;
+        }
+		const document = editor.document;
+        const currentText = document.getText();
+        const currentTime = Date.now();
+
+		const timeElapsed = (currentTime - lastCheckTime) / 1000;
+
+		const charsWritten = currentText.length - previousTextLength;
+
+		previousTextLength = currentText.length;
+        lastCheckTime = currentTime;
+		if (timeElapsed < 2 && charsWritten > 50) {
+            vscode.window.showWarningMessage(
+                `Detected rapid input: ${charsWritten} characters in ${timeElapsed.toFixed(2)} seconds. Potential copied code.`
+            );
+        } else if (charsWritten > 0) {
+            score += charsWritten;
+            vscode.window.showInformationMessage(
+                `Great job! You've written ${charsWritten} characters. Total score: ${score}`
+            );
+        }
+    });
 	context.subscriptions.push(disposable);
 }
-
-// This method is called when your extension is deactivated
 export function deactivate() {}

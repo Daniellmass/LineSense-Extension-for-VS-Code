@@ -1,7 +1,7 @@
 {
-  "name": "helloworld",
-  "displayName": "HelloWorld",
-  "description": "LEAVE BLANK",
+  "name": "linesense",
+  "displayName": "LineSense",
+  "description": "LineSense tracks your coding pace, detects copied code, and rewards your productivity.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.95.0"
@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "helloworld.helloWorld",
-        "title": "Hello World"
+        "command": "linesense.checkCode",
+        "title": "LineSense: Check Code Quality"
       }
     ]
   },
