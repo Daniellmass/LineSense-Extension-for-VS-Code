@@ -14,6 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
     statusBarItem.color = "#FFD700"; // Golden color
     statusBarItem.show();
 
+    // Register a command for manual checks
     const disposable = vscode.commands.registerCommand('linesense.checkCode', () => {
         const editor = vscode.window.activeTextEditor;
 
@@ -45,8 +46,33 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
+    // Listen for text changes in the active document
+    vscode.workspace.onDidChangeTextDocument((event) => {
+        const currentTime = Date.now();
+        const timeElapsed = (currentTime - lastCheckTime) / 1000;
+
+        const changes = event.contentChanges.reduce((sum, change) => sum + change.text.length, 0);
+
+        if (timeElapsed < 2 && changes > 50) {
+            vscode.window.showWarningMessage(
+                `Rapid input detected: ${changes} characters in ${timeElapsed.toFixed(2)} seconds. Possible copy-paste detected!`
+            );
+        } else if (changes > 0) {
+            score += changes;
+            statusBarItem.text = `$(star) LineSense Active | Score: ${score}`;
+            vscode.window.showInformationMessage(
+                `Great job! You've written ${changes} characters. Total score: ${score}`
+            );
+        }
+
+        lastCheckTime = currentTime;
+    });
+
+    // Add the disposable resources
     context.subscriptions.push(disposable);
     context.subscriptions.push(statusBarItem);
 }
 
-export function deactivate() {}
+export function deactivate() {
+    console.log('LineSense has been deactivated.');
+}
