@@ -1,71 +1,50 @@
-# helloworld README
+# LineSense Extension for VS Code
 
-This is the README for your extension "helloworld". After writing up a brief description, we recommend including the following sections.
-
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+## Overview
+**LineSense** is a VS Code extension designed to gamify your coding experience by tracking your coding progress and scoring your input. It detects rapid inputs and potential copy-pasting, helping you maintain awareness of your coding habits while providing feedback to keep you motivated.
 
 ---
 
-## Following extension guidelines
+## Features
+- **Coding Progress Tracker**:
+  - Tracks the number of characters written in the active editor.
+  - Displays a score in the status bar that updates as you code.
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+- **Copy-Paste Detection**:
+  - Detects and warns about large chunks of text pasted into the editor.
+  - Alerts you when rapid input (e.g., potential copied code) is detected.
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+- **Status Bar Integration**:
+  - Displays a status bar item with your current score and a tooltip for additional context.
+  - Uses a visually appealing golden color to highlight activity.
 
-## Working with Markdown
+- **Real-Time Feedback**:
+  - Provides pop-up messages for coding achievements and warnings for unusual input patterns.
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+---
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+## How It Works
+1. **Activation**:
+   When the extension is activated, it initializes a score tracker and displays a status bar item.
 
-## For more information
+2. **Command Registration**:
+   A custom command (`linesense.checkCode`) allows users to manually check their coding progress. This command:
+   - Calculates the number of characters written since the last check.
+   - Updates the score based on the characters written.
+   - Warns about rapid input or potential copy-pasting.
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+3. **Real-Time Monitoring**:
+   The extension listens for changes in the active document and:
+   - Calculates the time elapsed since the last check.
+   - Evaluates whether the changes suggest rapid input or copy-pasting.
+   - Updates the score and displays relevant feedback messages.
 
-**Enjoy!**
+4. **Deactivation**:
+   The extension cleans up resources and logs its deactivation.
+
+---
+
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
