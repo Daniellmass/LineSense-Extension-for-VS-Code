@@ -9,7 +9,10 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:linesense.checkCode"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
